@@ -1,0 +1,75 @@
+<body>
+
+
+<!-- QUESTO SCRIPT ESEGUE IL RICONOSCIMENTO VOCALE. L'EVENTO E' ATTIVATO DAL FORM CHE STA GIU A TUTTO -->
+
+<script type="text/javascript">
+
+      	window.fbAsyncInit = function() {
+    	FB.init({
+    	  appId      : '984577188256711',
+	  xfbml      : true,
+	  version    : 'v2.5'
+    	});
+
+    
+  	FB.login(function(){
+ 	 // Note: The call will only work if you accept the permission request
+	FB.api('me/accounts', function(response){
+	        token = response.data[0].access_token;
+      
+	}); 
+
+   (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+        
+     
+
+    
+    var recognition = new webkitSpeechRecognition();
+    recognition.lang = "it-IT";
+    recognition.onresult = function(event) {
+      if (event.results.length > 0) {
+        value = event.results[0][0].transcript;
+        console.log(value);
+
+	FB.api('1537969563164802/feed', 'post',
+   		{ "message" : value,
+        	access_token : "CAANZCd72PW8cBAOJxLRSnt3WIgr1C1HT6ZASaiS71Op4OaVUyzLUjAB2Uu5w4qkV2j7xq8HnF8avpI1JaMs3kOb1DkvwPbeLvZBTRwVrOuYXGQZAVUNInDySM2hZCJnZCxned23KSe1fxx1Fbh7oimJVkyvCcpZC815qsZCZAIWpqp4k7M8gkAek4bEnmYOapVKdxijVoLqiCiQZDZD"}, 
+      		function (response){
+        		console.log(response);
+        		window.location.reload();
+        	  });
+		}, {scope: 'manage_pages,publish_pages'});    
+      };
+  }
+}
+  
+document.onkeypress = function (m) {
+  m = m || window.event;
+  recognition.start();
+  console.log('premuto ')
+};
+
+
+
+</script>
+
+<!-- QUESTO SCRIPT ESEGUE LA PUBBLICAZIONE SU FB SULLA PAGINA MixedBY. QUESTA PARTE DOVREBBE ESSERE ESEGUITA SOLO DOPO LA PREDENTE, OSSIA A RICONOSCIMENTO VOCALE EFFETTUATO -->
+
+<script>
+  
+</script>
+
+
+  <form action="http://www.example.com/search">
+    <input type="search" id="q" name="q" size=60>
+    <input type="button" value="Click to Speak" onclick="recognition.start()">
+  </form>
+
+</body>
